@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1049473078370",
+    "firebase_url": "https://semestralnezadananie.firebaseio.com",
+    "project_id": "semestralnezadananie",
+    "storage_bucket": "semestralnezadananie.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049473078370:android:92155dbca123bb80",
+        "android_client_info": {
+          "package_name": "com.yyy.xxx.semestralnezadananie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049473078370-v3dn457n9p2529okqh3ugjrruvd8s239.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yyy.xxx.semestralnezadananie",
+            "certificate_hash": "c503f99644b01071faa3917ca1174f1cfd50cc34"
+          }
+        },
+        {
+          "client_id": "1049473078370-hirrnd40k8lsv6c73cta2ofqi1em0edi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS2WRS3iTdXy7_Py3yx31X3opdDaXQh1M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049473078370-hirrnd40k8lsv6c73cta2ofqi1em0edi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
