@@ -16,7 +16,7 @@ public class User
     {
         this.id = id;
         List<Post> zoznam = new ArrayList<Post>();
-        for (int i = 0; i < 1000; i++){
+        for (int i = 0; i < 10; i++){
             int cislo = i+1;
             zoznam.add(new Post("Prispevok: "+cislo, id));
         }

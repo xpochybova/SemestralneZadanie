@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "1049473078370-cs4m7anhno59agfe636sbpmqsieq2rde.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yyy.xxx.semestralnezadananie",
+            "certificate_hash": "0ac917e2fde57edc65c543dc092e10088cef7331"
+          }
+        },
+        {
           "client_id": "1049473078370-hirrnd40k8lsv6c73cta2ofqi1em0edi.apps.googleusercontent.com",
           "client_type": 3
         }
