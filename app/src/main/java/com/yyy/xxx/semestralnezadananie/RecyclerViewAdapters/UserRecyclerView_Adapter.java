@@ -47,8 +47,6 @@ public class UserRecyclerView_Adapter extends RecyclerView.Adapter<UserRecyclerV
         try {
             SnapHelper snapHelper = new PagerSnapHelper();
             snapHelper.attachToRecyclerView(rc);
-
-
         }
         catch (Exception e)
         {
@@ -56,7 +54,7 @@ public class UserRecyclerView_Adapter extends RecyclerView.Adapter<UserRecyclerV
         }
 
         rc.setAdapter(postAdapter);
-
+        rc.scrollToPosition(1);
     }
 
     @Override
