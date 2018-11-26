@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.text.TextUtils;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -13,14 +13,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.yyy.xxx.semestralnezadananie.Entities.User;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.yyy.xxx.semestralnezadananie.R;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "Login";
     private FirebaseAuth mAuth;
+    private FirebaseFirestore databaza;
 
     private EditText passwd_editText;
     private EditText email_editText;
@@ -38,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
     private TextView username_textView;
     private String newUsername;
 
-    DatabaseReference databaseUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         username_textView = findViewById(R.id.textView_username);
 
         mAuth = FirebaseAuth.getInstance();
+        databaza = FirebaseFirestore.getInstance();
 
     }
 
@@ -87,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+                            addToDatabase(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -146,9 +152,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user)
     {
-        if (user != null)
+        if (user != null) {
             Toast.makeText(LoginActivity.this, user.getEmail(),
                 Toast.LENGTH_SHORT).show();
+            //TODO spravit LOGOUT (alebo zakomentovat  toMainActivity(); ZATIAL)
+            toMainActivity();
+        }
         else
             Toast.makeText(LoginActivity.this, "Singed out",
                     Toast.LENGTH_SHORT).show();
@@ -244,19 +253,30 @@ public class LoginActivity extends AppCompatActivity {
     public void addToDatabase( FirebaseUser userF ){
 
         if (userF != null) {
-            Time now = new Time();
-            now.setToNow();
-            // String name = userF.getDisplayName();
+            String format = "yyyy-MM-dd hh:mm:ss";
             String uid = userF.getUid();
+            Map<String, Object> newUser = new HashMap<>();
+            newUser.put("username",this.newUsername);
+            newUser.put("date", DateFormat.format(format, new Date()).toString());
+            newUser.put("numberOfPosts","0");
 
-            //   String id = databaseUsers.push().getKey();
-
-            User user = new User(this.newUsername, now.toString(), 0);
-            databaseUsers.child(uid).setValue(user);
-
-
-            Toast.makeText(LoginActivity.this, "Added user to database",
-                    Toast.LENGTH_SHORT).show();
+            databaza.collection("users").document(uid)
+                    .set(newUser)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(LoginActivity.this, "novy uzivatel pridany do databazy",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("ERROR", e.getMessage());
+                            Toast.makeText(LoginActivity.this, "Nepodarilo sa pridat do databazy",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
         else {
             Toast.makeText(LoginActivity.this, "Added user FAIL",
