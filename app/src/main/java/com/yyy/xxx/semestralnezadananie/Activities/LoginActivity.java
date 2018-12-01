@@ -20,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.yyy.xxx.semestralnezadananie.Entities.Post;
@@ -65,6 +66,14 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         databaza = FirebaseFirestore.getInstance();
+//
+//        addImageToDB("8GY9ldUHP1V8AYnlylZa0jXQMsj2",
+//                "http://mobv.mcomputing.eu/upload/v/8f52a2079f1e846db0477f9c6c702a0f1e0b11cf.jpg",
+//                "username");
+//
+//        addVideoToDB("lrCF2Hoc8IR4HmlLx2RVvokRykp1",
+//                "http://mobv.mcomputing.eu/upload/v/7f0edc80830274b034292f5e9acdef04c5f2da91.mp4",
+//                "Lucia");
 
     }
 
@@ -289,14 +298,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void addImageToDB(String uId, String imageurl, String username){
-        String format = "yyyy-MM-dd hh:mm:ss";
         Map<String, Object> newPost = new HashMap<>();
         newPost.put("type","image");
         newPost.put("imageurl",imageurl);
         newPost.put("videourl","");
         newPost.put("username",username);
-        // TODO TREBA SPRAVNY FORMAT DATUMU ABY SA DALO ZORADOVAT
-        newPost.put("date", DateFormat.format(format, new Date()).toString());
+        newPost.put("date",  FieldValue.serverTimestamp());
         newPost.put("userid",uId);
 
         databaza.collection("posts").document()
@@ -325,10 +332,8 @@ public class LoginActivity extends AppCompatActivity {
         newPost.put("imageurl","");
         newPost.put("videourl",videourl);
         newPost.put("username",username);
-        // TODO TREBA SPRAVNY FORMAT DATUMU ABY SA DALO ZORADOVAT
-        newPost.put("date", DateFormat.format(format, new Date()).toString());
+        newPost.put("date",  FieldValue.serverTimestamp());
         newPost.put("userid",uId);
-
 
         databaza.collection("posts").document()
                 .set(newPost)

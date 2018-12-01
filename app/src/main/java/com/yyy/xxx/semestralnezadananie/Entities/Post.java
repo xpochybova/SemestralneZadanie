@@ -42,6 +42,11 @@ public class Post implements Serializable, Cloneable
         this.date = date;
     }
 
+    public static Post copy( Post post ) {
+        Post newPost = new Post(post.id,post.type, post.videourl,post.imageurl,post.username, post.date);
+        return newPost;
+    }
+
     @Override
     public String toString() {
         return this.username + " " + this.id;

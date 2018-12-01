@@ -40,15 +40,15 @@ public class MainActivity extends AppCompatActivity {
         zoznamPosts = new ArrayList<>();
         zoznamUsers = new ArrayList<>();
 
-     //   ArrayList<User> list1 = (ArrayList<User>) getIntent().getSerializableExtra("ExtraUsers");
+        ArrayList<User> list1 = (ArrayList<User>) getIntent().getSerializableExtra("ExtraUsers");
         ArrayList<Post> list2 = (ArrayList<Post>) getIntent().getSerializableExtra("ExtraPosts");
 
-     //   Log.d(" list1", " " + list1.size());
+        Log.d(" list1", " " + list1.size());
         Log.d(" list2", " " + list2.size());
 
         databaza = FirebaseFirestore.getInstance();
 
-        userAdapter = new UserRecyclerView_Adapter(list2);
+        userAdapter = new UserRecyclerView_Adapter(list2,list1);
 
         linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
 

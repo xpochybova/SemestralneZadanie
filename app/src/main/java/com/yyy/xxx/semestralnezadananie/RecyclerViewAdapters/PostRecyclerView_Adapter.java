@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yyy.xxx.semestralnezadananie.Entities.Post;
+import com.yyy.xxx.semestralnezadananie.Entities.User;
 import com.yyy.xxx.semestralnezadananie.R;
 
 import java.util.List;
@@ -14,9 +15,11 @@ import java.util.List;
 public class PostRecyclerView_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     private List<Post> prvky;
+    private User profil;
 
-    public PostRecyclerView_Adapter(List<Post> prvky){
+    public PostRecyclerView_Adapter(List<Post> prvky, User profil){
         this.prvky = prvky;
+        this.profil = profil;
 
         // VYTVORI PLACEHOLDER PRE PROFIL NA NULTEJ POZICII
         if (prvky.get(0) != null)
@@ -48,9 +51,9 @@ public class PostRecyclerView_Adapter extends RecyclerView.Adapter<RecyclerView.
         {
             // TODO: 25.11.2018 setnut view pre pouzivatela
             UserProfileViewHolder h = (UserProfileViewHolder)holder;
-            h.username.setText("Maros69");
-            h.dateRegistered.setText("69.69.6969");
-            h.postsCount.setText("69");
+            h.username.setText(profil.getUsername());
+            h.dateRegistered.setText(profil.getDate());
+            h.postsCount.setText(profil.getNumberOfPosts().toString());
         }
         else // PRISPEVOK
         {

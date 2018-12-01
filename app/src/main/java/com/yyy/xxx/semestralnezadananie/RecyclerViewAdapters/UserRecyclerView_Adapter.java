@@ -19,9 +19,11 @@ import java.util.List;
 public class UserRecyclerView_Adapter extends RecyclerView.Adapter<UserRecyclerView_ViewHolder>{
 
     private List<Post> recycler_items;
+    private List<User> listProfilov;
 
-    public UserRecyclerView_Adapter(List<Post> recycler_items){
+    public UserRecyclerView_Adapter(List<Post> recycler_items, List<User> listProfilov){
         this.recycler_items = recycler_items;
+        this.listProfilov = listProfilov;
     }
 
     @NonNull
@@ -39,7 +41,7 @@ public class UserRecyclerView_Adapter extends RecyclerView.Adapter<UserRecyclerV
     public void onBindViewHolder(@NonNull UserRecyclerView_ViewHolder holder, int i) {
         RecyclerView rc = holder.recyclerView;
 
-        PostRecyclerView_Adapter postAdapter = new PostRecyclerView_Adapter(recycler_items.get(i).getPrispevky());
+        PostRecyclerView_Adapter postAdapter = new PostRecyclerView_Adapter(recycler_items.get(i).getPrispevky(), listProfilov.get(i));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(holder.itemView.getContext(),LinearLayoutManager.VERTICAL,false);
 
