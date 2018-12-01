@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yyy.xxx.semestralnezadananie.Entities.Post;
 import com.yyy.xxx.semestralnezadananie.Entities.User;
 import com.yyy.xxx.semestralnezadananie.R;
 
@@ -17,9 +18,9 @@ import java.util.List;
 
 public class UserRecyclerView_Adapter extends RecyclerView.Adapter<UserRecyclerView_ViewHolder>{
 
-    private List<User> recycler_items;
+    private List<Post> recycler_items;
 
-    public UserRecyclerView_Adapter(List<User> recycler_items){
+    public UserRecyclerView_Adapter(List<Post> recycler_items){
         this.recycler_items = recycler_items;
     }
 

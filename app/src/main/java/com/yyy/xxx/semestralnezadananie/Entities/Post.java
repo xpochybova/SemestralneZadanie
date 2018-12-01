@@ -1,8 +1,9 @@
 package com.yyy.xxx.semestralnezadananie.Entities;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.ArrayList;
 
-public class Post
+public class Post implements Serializable, Cloneable
 {
     private String id;
     private String type;
@@ -12,7 +13,7 @@ public class Post
     private String date;
     private String userid;
 
-    private List<Post> prispevkyPouzivatela;
+    private ArrayList<Post> prispevkyPouzivatela;
 
     private String title;
 
@@ -30,15 +31,20 @@ public class Post
         this.username = username;
         this.date = date;
         this.userid = userid;
-
-        //TODO PRIDAT OSTATNE PRISPEVKY PODLA "userid"
-       // setPrispevkyPouzivatela(userid);
     }
 
+    public Post(String id, String type, String videourl, String imageurl, String username, String date) {
+        this.id = id;
+        this.type = type;
+        this.videourl = videourl;
+        this.imageurl = imageurl;
+        this.username = username;
+        this.date = date;
+    }
 
     @Override
     public String toString() {
-        return this.title + " " + this.username;
+        return this.username + " " + this.id;
     }
 
     public String getTitle() {
@@ -81,7 +87,8 @@ public class Post
 
     public void setUserid(String userid) { this.userid = userid; }
 
-    public void setPrispevkyPouzivatela(String id){
-            //TODO vytiahnut prispevky uzivatela z DB
-    }
+    public ArrayList<Post> getPrispevky() { return prispevkyPouzivatela; }
+
+    public void setPrispevky(ArrayList<Post> p) { this.prispevkyPouzivatela = p; }
+
 }
