@@ -26,7 +26,8 @@ public class ReadFromDatabase {
     private Intent intent;
 
     public ArrayList<Post> listPosts;
-    public ArrayList<User> listUsers;
+    public ArrayList<User> listUsersByPost;
+    public Map<String, User> mapUsers;
     public Map<String, ArrayList<Post>> mapAllToUserId;
 
 
@@ -35,8 +36,9 @@ public class ReadFromDatabase {
         this.context = ctx;
         this.databaza = databaza;
         listPosts = new ArrayList<Post>();
-        listUsers = new ArrayList<User>();
         mapAllToUserId = new HashMap<>();
+        mapUsers = new HashMap<>();
+        listUsersByPost = new ArrayList<User>();
 
         readUsersFromDB();
     }
@@ -55,7 +57,7 @@ public class ReadFromDatabase {
                                         document.getData().get("date").toString(),
                                         (Integer.parseInt(document.getData().get("numberOfPosts").toString()))
                                 );
-                                listUsers.add(u);
+                                mapUsers.put(document.getId(),u);
                             }
                         } else {
                             Log.w("ERR", "Error getting documents.", task.getException());
@@ -70,6 +72,7 @@ public class ReadFromDatabase {
 
     private void readPostsFromDB(){
         databaza.collection("posts")
+                .orderBy("date")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -89,6 +92,9 @@ public class ReadFromDatabase {
                                 );
 
                                 listPosts.add(p);
+                                Log.d("", ": "+p.getUserid());
+                                Log.d("", ": "+mapUsers.get(p.getUserid()));
+                                listUsersByPost.add(mapUsers.get(p.getUserid()));
 
                                 if(mapAllToUserId.get(userid) == null){
                                     ArrayList<Post> newList = new ArrayList<>();
@@ -105,15 +111,14 @@ public class ReadFromDatabase {
 
                         for (Post l : listPosts){
                             ArrayList<Post> newlist = new ArrayList<>();
-                            //  list.add(l); //TODO PRIDAT PRVY POST NA ZACIATOK LISTU !
-
+                            newlist.add(Post.copy(l));
                             newlist.addAll(mapAllToUserId.get(l.getUserid()));
                             l.setPrispevky(newlist);
                         }
 
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("ExtraPosts", listPosts);
-                         //  bundle.putSerializable("ExtraPosts", listUsers);
+                        bundle.putSerializable("ExtraUsers", listUsersByPost);
                         intent.putExtras(bundle);
                         context.startActivity(intent);
 
