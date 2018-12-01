@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore databaza;
 
     List<Post> zoznamPosts;
+    List<User> zoznamUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,17 +38,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         zoznamPosts = new ArrayList<>();
+        zoznamUsers = new ArrayList<>();
+
+     //   ArrayList<User> list1 = (ArrayList<User>) getIntent().getSerializableExtra("ExtraUsers");
+        ArrayList<Post> list2 = (ArrayList<Post>) getIntent().getSerializableExtra("ExtraPosts");
+
+     //   Log.d(" list1", " " + list1.size());
+        Log.d(" list2", " " + list2.size());
+
         databaza = FirebaseFirestore.getInstance();
-        readFromDB();
 
-        List<User> zoznam = new ArrayList<>();
-        for (int i = 10; i < 15; i++){
-            int cislo = i+1;
-            zoznam.add(new User("UserID: "+cislo));
-        }
-
-        // TODO pouzit zoznamPosts namiesto List<User> zoznam
-        userAdapter = new UserRecyclerView_Adapter(zoznam);
+        userAdapter = new UserRecyclerView_Adapter(list2);
 
         linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
 
@@ -60,34 +61,5 @@ public class MainActivity extends AppCompatActivity {
         userRecyclerView.setAdapter(userAdapter);
     }
 
-    private void readFromDB(){
-        databaza.collection("posts")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(" date", document.getId() + " => " + document.getData().get("date"));
-                                Log.d(" USERNAME",  "  " + document.getData().get("username"));
-                                Log.d(" imageurl",  " " + document.getData().get("imageurl"));
-                                Log.d(" type",  " " + document.getData().get("type"));
-                                Log.d(" videourl", " " + document.getData().get("videourl"));
-
-                                zoznamPosts.add(new Post( document.getId(),
-                                        document.getData().get("type").toString(),
-                                        document.getData().get("videourl").toString(),
-                                        document.getData().get("imageurl").toString(),
-                                        document.getData().get("username").toString(),
-                                        document.getData().get("date").toString(),
-                                        document.getData().get("userid").toString()
-                                ));
-                            }
-                        } else {
-                            Log.w("ERR", "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-    }
 
 }

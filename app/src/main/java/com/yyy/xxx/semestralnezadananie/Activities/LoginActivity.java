@@ -20,10 +20,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.yyy.xxx.semestralnezadananie.Entities.Post;
+import com.yyy.xxx.semestralnezadananie.Entities.User;
 import com.yyy.xxx.semestralnezadananie.R;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -67,11 +73,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if (currentUser != null)
-        {
-            toMainActivity();
-        }
 
         updateUI(currentUser);
     }
@@ -153,13 +154,15 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user)
     {
         if (user != null) {
-            Toast.makeText(LoginActivity.this, user.getEmail(),
+            Toast.makeText(
+                    LoginActivity.this,
+                    " " + user.getEmail() + "\r\n\t\t\t\t\t\t LOADING...",
                 Toast.LENGTH_SHORT).show();
             //TODO spravit LOGOUT (alebo zakomentovat  toMainActivity(); ZATIAL)
             toMainActivity();
         }
         else
-            Toast.makeText(LoginActivity.this, "Singed out",
+            Toast.makeText(LoginActivity.this, "You are not sign in yet",
                     Toast.LENGTH_SHORT).show();
     }
 
@@ -243,11 +246,10 @@ public class LoginActivity extends AppCompatActivity {
         singinUser(this.email_editText.getText().toString(), this.passwd_editText.getText().toString());
     }
 
-
     public void toMainActivity()
     {
         Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        new ReadFromDatabase(this,intent, databaza);
     }
 
     public void addToDatabase( FirebaseUser userF ){
@@ -257,7 +259,7 @@ public class LoginActivity extends AppCompatActivity {
             String uid = userF.getUid();
             Map<String, Object> newUser = new HashMap<>();
             newUser.put("username",this.newUsername);
-            newUser.put("date", DateFormat.format(format, new Date()).toString());
+            newUser.put("date", new Date().getTime());  // TODO GETTIME ???
             newUser.put("numberOfPosts","0");
 
             databaza.collection("users").document(uid)
@@ -284,4 +286,69 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+
+
+    private void addImageToDB(String uId, String imageurl, String username){
+        String format = "yyyy-MM-dd hh:mm:ss";
+        Map<String, Object> newPost = new HashMap<>();
+        newPost.put("type","image");
+        newPost.put("imageurl",imageurl);
+        newPost.put("videourl","");
+        newPost.put("username",username);
+        // TODO TREBA SPRAVNY FORMAT DATUMU ABY SA DALO ZORADOVAT
+        newPost.put("date", DateFormat.format(format, new Date()).toString());
+        newPost.put("userid",uId);
+
+        databaza.collection("posts").document()
+                .set(newPost)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(LoginActivity.this, "prispevok pridany",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("ERROR", e.getMessage());
+                        Toast.makeText(LoginActivity.this, "Nepodarilo sa pridat prispevok",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void addVideoToDB(String uId, String videourl, String username){
+        String format = "yyyy-MM-dd hh:mm:ss";
+        Map<String, Object> newPost = new HashMap<>();
+        newPost.put("type","video");
+        newPost.put("imageurl","");
+        newPost.put("videourl",videourl);
+        newPost.put("username",username);
+        // TODO TREBA SPRAVNY FORMAT DATUMU ABY SA DALO ZORADOVAT
+        newPost.put("date", DateFormat.format(format, new Date()).toString());
+        newPost.put("userid",uId);
+
+
+        databaza.collection("posts").document()
+                .set(newPost)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(LoginActivity.this, "prispevok pridany",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("ERROR", e.getMessage());
+                        Toast.makeText(LoginActivity.this, "Nepodarilo sa pridat prispevok",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+
 }

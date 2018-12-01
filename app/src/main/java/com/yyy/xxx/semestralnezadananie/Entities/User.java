@@ -1,9 +1,10 @@
 package com.yyy.xxx.semestralnezadananie.Entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User
+public class User implements Serializable
 {
     private String id;
     private String username;
@@ -22,6 +23,13 @@ public class User
         }
 
         prispevky = zoznam;
+    }
+
+    public User(String id, String username, String date, Integer numberOfPosts) {
+        this.id = id;
+        this.username = username;
+        this.date = date;
+        this.numberOfPosts = numberOfPosts;
     }
 
     public User(String username, String date, Integer numberOfPosts) {
