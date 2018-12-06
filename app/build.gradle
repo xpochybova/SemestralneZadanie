@@ -31,6 +31,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.lsjwzh:recyclerviewpager:1.0.8'
     implementation 'com.google.firebase:firebase-firestore:17.0.1'
+
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.8.0'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.8.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
