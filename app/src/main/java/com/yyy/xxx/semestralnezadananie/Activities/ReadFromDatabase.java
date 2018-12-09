@@ -13,6 +13,7 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.yyy.xxx.semestralnezadananie.Entities.Post;
@@ -26,8 +27,7 @@ public class ReadFromDatabase {
     private Intent intent;
 
     public ArrayList<Post> listPosts;
-    public ArrayList<User> listUsersByPost;
-    public Map<String, User> mapUsers;
+    public ArrayList<User> listUsers;
     public Map<String, ArrayList<Post>> mapAllToUserId;
 
 
@@ -36,9 +36,8 @@ public class ReadFromDatabase {
         this.context = ctx;
         this.databaza = databaza;
         listPosts = new ArrayList<Post>();
+        listUsers = new ArrayList<User>();
         mapAllToUserId = new HashMap<>();
-        mapUsers = new HashMap<>();
-        listUsersByPost = new ArrayList<User>();
 
         readUsersFromDB();
     }
@@ -57,7 +56,7 @@ public class ReadFromDatabase {
                                         document.getData().get("date").toString(),
                                         (Integer.parseInt(document.getData().get("numberOfPosts").toString()))
                                 );
-                                mapUsers.put(document.getId(),u);
+                                listUsers.add(u);
                             }
                         } else {
                             Log.w("ERR", "Error getting documents.", task.getException());
@@ -72,7 +71,7 @@ public class ReadFromDatabase {
 
     private void readPostsFromDB(){
         databaza.collection("posts")
-                .orderBy("date")
+                .orderBy("date", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -92,9 +91,6 @@ public class ReadFromDatabase {
                                 );
 
                                 listPosts.add(p);
-                                Log.d("", ": "+p.getUserid());
-                                Log.d("", ": "+mapUsers.get(p.getUserid()));
-                                listUsersByPost.add(mapUsers.get(p.getUserid()));
 
                                 if(mapAllToUserId.get(userid) == null){
                                     ArrayList<Post> newList = new ArrayList<>();
@@ -111,14 +107,15 @@ public class ReadFromDatabase {
 
                         for (Post l : listPosts){
                             ArrayList<Post> newlist = new ArrayList<>();
-                            newlist.add(Post.copy(l));
+                            //  list.add(l); //TODO PRIDAT PRVY POST NA ZACIATOK LISTU !
+
                             newlist.addAll(mapAllToUserId.get(l.getUserid()));
                             l.setPrispevky(newlist);
                         }
 
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("ExtraPosts", listPosts);
-                        bundle.putSerializable("ExtraUsers", listUsersByPost);
+                         //  bundle.putSerializable("ExtraPosts", listUsers);
                         intent.putExtras(bundle);
                         context.startActivity(intent);
 

@@ -221,7 +221,7 @@ public class LoginActivity extends AppCompatActivity {
 
         String password = passwd_editText.getText().toString();
 
-        if (isCreate && !isValidPassword(password))
+        if (isCreate && password.isEmpty())
         {
             passwd_editText.setError("must contain upper case, lower case character and number, must contain at least 6 characters.");
             valid = false;
