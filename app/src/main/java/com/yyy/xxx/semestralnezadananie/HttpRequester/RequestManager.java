@@ -1,6 +1,7 @@
 package com.yyy.xxx.semestralnezadananie.HttpRequester;
 
 import android.app.DownloadManager;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -13,6 +14,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.yyy.xxx.semestralnezadananie.Activities.LoginActivity;
+import com.yyy.xxx.semestralnezadananie.Activities.MainActivity;
+import com.yyy.xxx.semestralnezadananie.Activities.ReadFromDatabase;
 import com.yyy.xxx.semestralnezadananie.Entities.User;
 import com.yyy.xxx.semestralnezadananie.LoggedUser;
 
@@ -179,6 +182,7 @@ public class RequestManager extends AsyncTask<String, String, String> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         return response;
     }
 
@@ -205,6 +209,8 @@ public class RequestManager extends AsyncTask<String, String, String> {
         newPost.put("userid", uId);
 
         databaza.collection("posts").document().set(newPost);
+        databaza.collection("users").document(uId)
+                .update("numberOfPosts", (++LoggedUser.pocet));
     }
     private void addImageToDB(String uId, String imgurl, String username) {
         String format = "yyyy-MM-dd hh:mm:ss";
@@ -217,6 +223,8 @@ public class RequestManager extends AsyncTask<String, String, String> {
         newPost.put("userid", uId);
 
         databaza.collection("posts").document().set(newPost);
+        databaza.collection("users").document(uId)
+                .update("numberOfPosts", (++LoggedUser.pocet));
     }
 }
 
