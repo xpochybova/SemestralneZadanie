@@ -327,6 +327,8 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+
+
     }
 
     private void addVideoToDB(String uId, String videourl, String username){

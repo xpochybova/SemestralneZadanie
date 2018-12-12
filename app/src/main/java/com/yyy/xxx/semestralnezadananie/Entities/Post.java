@@ -1,6 +1,7 @@
 package com.yyy.xxx.semestralnezadananie.Entities;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class Post implements Serializable, Cloneable
@@ -84,7 +85,7 @@ public class Post implements Serializable, Cloneable
 
     public void setImageurl(String imageurl) { this.imageurl = imageurl; }
 
-    public String getDate() { return date; }
+    public String getDate() { return date.replace("GMT+01:00", "").substring(3,25); }
 
     public void setDate(String date) { this.date = date; }
 

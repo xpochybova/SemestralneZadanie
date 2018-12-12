@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.format.DateFormat;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
