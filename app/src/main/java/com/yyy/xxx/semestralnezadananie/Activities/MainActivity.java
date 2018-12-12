@@ -29,10 +29,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.yyy.xxx.semestralnezadananie.Entities.Post;
 import com.yyy.xxx.semestralnezadananie.Entities.User;
 import com.yyy.xxx.semestralnezadananie.FilePathHelper;
+import com.yyy.xxx.semestralnezadananie.HttpRequester.MultipartUtility;
+import com.yyy.xxx.semestralnezadananie.HttpRequester.RequestManager;
 import com.yyy.xxx.semestralnezadananie.R;
 import com.yyy.xxx.semestralnezadananie.RecyclerViewAdapters.UserRecyclerView_Adapter;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,20 +161,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void Upload(View v)
     {
-        // TODO: 8.12.2018 UPLOAD OBR/VID NA MAROSKOV SERVER A PRIDANIE POSTU DO DATABAZY
         boolean isVideo = video.isChecked();
         boolean isImage = img.isChecked();
 
-        if (isImage)
-        {
+        String httpURL =  "http://mobv.mcomputing.eu/upload/index.php";
 
+        try {
+
+            RequestManager rm = new RequestManager(databaza);
+            rm.makeRequest(httpURL,"UTF8","upfile",new File(upload_filepath));
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        else
-        {
-
-        }
-
-
+     /* if(isImage){}else{}*/
     }
 
 
@@ -237,6 +240,7 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: 8. 12. 2018 SPRACOVAT OBRAZOK/VIDEO ABY SA DAL POSLAT NA SERVER
 
                 upload_filepath = path;
+
 
             }
             catch (Exception e)

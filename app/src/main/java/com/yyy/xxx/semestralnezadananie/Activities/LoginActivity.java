@@ -25,6 +25,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.yyy.xxx.semestralnezadananie.Entities.Post;
 import com.yyy.xxx.semestralnezadananie.Entities.User;
+import com.yyy.xxx.semestralnezadananie.LoggedUser;
 import com.yyy.xxx.semestralnezadananie.R;
 
 import java.util.ArrayList;
@@ -163,6 +164,9 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user)
     {
         if (user != null) {
+
+            LoggedUser.userId = user.getUid();
+
             Toast.makeText(
                     LoginActivity.this,
                     " " + user.getEmail() + "\r\n\t\t\t\t\t\t LOADING...",
