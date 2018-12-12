@@ -272,8 +272,8 @@ public class LoginActivity extends AppCompatActivity {
             String uid = userF.getUid();
             Map<String, Object> newUser = new HashMap<>();
             newUser.put("username",this.newUsername);
-            newUser.put("date", new Date().getTime());  // TODO GETTIME ???
-            newUser.put("numberOfPosts","0");
+            newUser.put("date", new Date().toString());
+            newUser.put("numberOfPosts", (int) 0);
 
             databaza.collection("users").document(uid)
                     .set(newUser)

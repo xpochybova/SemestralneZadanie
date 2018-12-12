@@ -14,6 +14,7 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.yyy.xxx.semestralnezadananie.Entities.Post;
@@ -56,11 +57,13 @@ public class ReadFromDatabase {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 User u = new User( document.getId(),
                                         document.getData().get("username").toString(),
-                                        document.getData().get("date").toString(),
+                                        document.getData().get("date").toString(), //.replace("GMT+01:00", "").substring(3,25),
                                         (Integer.parseInt(document.getData().get("numberOfPosts").toString()))
                                 );
-                                if(document.getId().equals(LoggedUser.userId))
+                                if(document.getId().equals(LoggedUser.userId)) {
                                     LoggedUser.userName = document.getData().get("username").toString();
+                                    LoggedUser.pocet = (Integer.parseInt(document.getData().get("numberOfPosts").toString()));
+                                }
                                 mapUsers.put(document.getId(),u);
                             }
                         } else {
@@ -76,7 +79,7 @@ public class ReadFromDatabase {
 
     private void readPostsFromDB(){
         databaza.collection("posts")
-                .orderBy("date")
+                .orderBy("date", Query.Direction.DESCENDING )
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

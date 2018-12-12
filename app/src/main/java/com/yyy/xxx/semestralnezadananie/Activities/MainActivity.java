@@ -174,6 +174,9 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        MainActivity.newPostDialog.cancel();
+        refresh(v);
+
      /* if(isImage){}else{}*/
     }
 
