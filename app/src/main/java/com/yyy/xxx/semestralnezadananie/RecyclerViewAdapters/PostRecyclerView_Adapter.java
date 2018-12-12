@@ -69,10 +69,13 @@ public class PostRecyclerView_Adapter extends RecyclerView.Adapter<RecyclerView.
         {
             // TODO: 25.11.2018 setnut view pre prispevoky
             PostRecyclerView_ViewHolder h = (PostRecyclerView_ViewHolder)holder;
-            h._post.setText(prvky.get(i).toString());
+
+
+            h.userName.setText(prvky.get(i).getUsername());
+            h.postDate.setText(prvky.get(i).getDate());
 
             videoPlayer = new VideoPlayer(h.playerView);
-            videoPlayer.playVideo("",context);
+            videoPlayer.playVideo(prvky.get(i).getVideourl(),context);
 
         }
     }

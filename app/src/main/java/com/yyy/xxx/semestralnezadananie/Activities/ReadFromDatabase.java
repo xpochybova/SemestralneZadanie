@@ -17,6 +17,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.yyy.xxx.semestralnezadananie.Entities.Post;
 import com.yyy.xxx.semestralnezadananie.Entities.User;
+import com.yyy.xxx.semestralnezadananie.LoggedUser;
 
 
 public class ReadFromDatabase {
@@ -57,6 +58,8 @@ public class ReadFromDatabase {
                                         document.getData().get("date").toString(),
                                         (Integer.parseInt(document.getData().get("numberOfPosts").toString()))
                                 );
+                                if(document.getData().get("uid") == LoggedUser.userId)
+                                    LoggedUser.userName = document.getData().get("username").toString();
                                 mapUsers.put(document.getId(),u);
                             }
                         } else {

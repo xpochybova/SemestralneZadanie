@@ -17,6 +17,7 @@ public class VideoPlayer {
 
     private PlayerView playerView;
     private SimpleExoPlayer player;
+
     public boolean isDisabled = false;
 
     public VideoPlayer(View playerView){
@@ -32,8 +33,9 @@ public class VideoPlayer {
         player = ExoPlayerFactory.newSimpleInstance(context,new DefaultTrackSelector());
         playerView.setPlayer(player);
 
-       // Uri videoUri = Uri.parse(url);
-        Uri videoUri = Uri.parse(Environment.getExternalStorageDirectory()+"/Movies/Best Cry Ever.mp4");
+
+        Uri videoUri = Uri.parse(url);
+
 
         DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(context, Util.getUserAgent(context,"exo_demo"));
         ExtractorMediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(videoUri);

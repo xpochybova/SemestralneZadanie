@@ -9,14 +9,18 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.yyy.xxx.semestralnezadananie.R;
 
 public class PostRecyclerView_ViewHolder extends RecyclerView.ViewHolder {
-    public TextView _post;
+    public TextView userName;
+    public TextView postDate;
+
     PlayerView playerView;
 
 
     public PostRecyclerView_ViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        _post = itemView.findViewById(R.id.recyclerview_post_vertical);
+        userName = itemView.findViewById(R.id.userName);
+        postDate = itemView.findViewById(R.id.postDate);
+
         playerView = itemView.findViewById(R.id.playerView);
 
     }
