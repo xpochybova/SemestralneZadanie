@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         try {
 
             RequestManager rm = new RequestManager(databaza);
-            rm.makeRequest(httpURL,"UTF8","upfile",new File(upload_filepath));
+            rm.makeRequest(httpURL,"UTF8","upfile",new File(upload_filepath),isVideo);
 
         } catch (IOException e) {
             e.printStackTrace();

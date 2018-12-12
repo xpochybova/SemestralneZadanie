@@ -59,7 +59,7 @@ public class ReadFromDatabase {
                                         document.getData().get("date").toString(),
                                         (Integer.parseInt(document.getData().get("numberOfPosts").toString()))
                                 );
-                                if(document.getData().get("uid") == LoggedUser.userId)
+                                if(document.getId().equals(LoggedUser.userId))
                                     LoggedUser.userName = document.getData().get("username").toString();
                                 mapUsers.put(document.getId(),u);
                             }

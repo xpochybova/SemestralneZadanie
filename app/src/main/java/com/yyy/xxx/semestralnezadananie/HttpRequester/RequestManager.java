@@ -51,6 +51,9 @@ public class RequestManager extends AsyncTask<String, String, String> {
          String fieldName;
          File uploadFile;
 
+         boolean isVideo;
+
+
     FirebaseFirestore databaza;
 
     public RequestManager(FirebaseFirestore databaza){
@@ -58,13 +61,13 @@ public class RequestManager extends AsyncTask<String, String, String> {
     }
 
 
-    public void makeRequest(String requestURL,String charset,String fieldName, File uploadFile) throws IOException {
+    public void makeRequest(String requestURL,String charset,String fieldName, File uploadFile,boolean isVideo) throws IOException {
 
             this.requestURL = requestURL;
             this.charset = charset;
             this.fieldName = fieldName;
             this.uploadFile = uploadFile;
-
+            this.isVideo = isVideo;
             execute("");
          }
 
@@ -83,7 +86,9 @@ public class RequestManager extends AsyncTask<String, String, String> {
         writer.append("Content-Transfer-Encoding: binary").append(LINE_FEED);
         writer.append(LINE_FEED);
         writer.flush();
+
         System.out.println("PATH= "+ uploadFile.toPath().toString());
+
         FileInputStream inputStream = new FileInputStream(uploadFile);
         byte[] buffer = new byte[4096];
         int bytesRead = -1;
@@ -185,7 +190,8 @@ public class RequestManager extends AsyncTask<String, String, String> {
         String uri = json.getString("message");
 
         String videoUrl = base+uri;
-        addVideoToDB(LoggedUser.userId,videoUrl,LoggedUser.userName);
+        if(isVideo)addVideoToDB(LoggedUser.userId,videoUrl,LoggedUser.userName);
+        else addImageToDB(LoggedUser.userId,videoUrl,LoggedUser.userName);
     }
 
     private void addVideoToDB(String uId, String videourl, String username) {
@@ -194,6 +200,18 @@ public class RequestManager extends AsyncTask<String, String, String> {
         newPost.put("type", "video");
         newPost.put("imageurl", "");
         newPost.put("videourl", videourl);
+        newPost.put("username", username);
+        newPost.put("date", FieldValue.serverTimestamp());
+        newPost.put("userid", uId);
+
+        databaza.collection("posts").document().set(newPost);
+    }
+    private void addImageToDB(String uId, String imgurl, String username) {
+        String format = "yyyy-MM-dd hh:mm:ss";
+        Map<String, Object> newPost = new HashMap<>();
+        newPost.put("type", "video");
+        newPost.put("imageurl", imgurl);
+        newPost.put("videourl", "");
         newPost.put("username", username);
         newPost.put("date", FieldValue.serverTimestamp());
         newPost.put("userid", uId);
