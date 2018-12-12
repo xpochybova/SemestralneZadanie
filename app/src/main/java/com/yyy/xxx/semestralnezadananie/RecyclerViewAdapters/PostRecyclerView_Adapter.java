@@ -3,10 +3,13 @@ package com.yyy.xxx.semestralnezadananie.RecyclerViewAdapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.yyy.xxx.semestralnezadananie.Entities.Post;
 import com.yyy.xxx.semestralnezadananie.Entities.User;
 import com.yyy.xxx.semestralnezadananie.R;
@@ -46,11 +49,16 @@ public class PostRecyclerView_Adapter extends RecyclerView.Adapter<RecyclerView.
                     .inflate(R.layout.user_profile, viewGroup, false);
             return new UserProfileViewHolder(itemView);
         }
-        else
+        else if( i == 1)
         {
             View itemView = LayoutInflater.from(viewGroup.getContext())
                     .inflate(R.layout.recyclerview_row_vertical, viewGroup, false);
             return new PostRecyclerView_ViewHolder(itemView);
+        }
+        else {
+            View itemView = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.image_post_layout, viewGroup, false);
+            return new PostRecyclerView_ImageViewHolder(itemView);
         }
     }
 
@@ -67,15 +75,23 @@ public class PostRecyclerView_Adapter extends RecyclerView.Adapter<RecyclerView.
         }
         else // PRISPEVOK
         {
-            // TODO: 25.11.2018 setnut view pre prispevoky
-            PostRecyclerView_ViewHolder h = (PostRecyclerView_ViewHolder)holder;
+            if(prvky.get(i).getType().equals("video")) {
 
+                PostRecyclerView_ViewHolder h = (PostRecyclerView_ViewHolder) holder;
+                h.userName.setText(prvky.get(i).getUsername());
+                h.postDate.setText(prvky.get(i).getDate());
 
-            h.userName.setText(prvky.get(i).getUsername());
-            h.postDate.setText(prvky.get(i).getDate());
+                  videoPlayer = new VideoPlayer(h.playerView);
+                  videoPlayer.playVideo(prvky.get(i).getVideourl(),context);
 
-            videoPlayer = new VideoPlayer(h.playerView);
-            videoPlayer.playVideo(prvky.get(i).getVideourl(),context);
+            }
+
+            if(prvky.get(i).getType().equals("image")) {
+                PostRecyclerView_ImageViewHolder h = (PostRecyclerView_ImageViewHolder) holder;
+                h.imageText.setText(prvky.get(i).getUsername());
+                h.imageDate.setText( prvky.get(i).getDate());
+                h.glideImageReq.load(prvky.get(i).getImageurl()).into(h.imageView);
+            }
 
         }
     }
@@ -94,7 +110,9 @@ public class PostRecyclerView_Adapter extends RecyclerView.Adapter<RecyclerView.
         }
         else              // INAK ZOBRAZ POST LAYOUT
         {
-            return 1;
+            if(prvky.get(position).getType().equals("video"))
+                 return 1;
+            else return 2;
         }
     }
 }
