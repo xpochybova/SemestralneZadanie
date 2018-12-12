@@ -209,7 +209,7 @@ public class RequestManager extends AsyncTask<String, String, String> {
     private void addImageToDB(String uId, String imgurl, String username) {
         String format = "yyyy-MM-dd hh:mm:ss";
         Map<String, Object> newPost = new HashMap<>();
-        newPost.put("type", "video");
+        newPost.put("type", "image");
         newPost.put("imageurl", imgurl);
         newPost.put("videourl", "");
         newPost.put("username", username);
