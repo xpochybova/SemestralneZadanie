@@ -85,7 +85,7 @@ public class Post implements Serializable, Cloneable
 
     public void setImageurl(String imageurl) { this.imageurl = imageurl; }
 
-    public String getDate() { return date.replace("GMT+01:00", "").substring(3,25); }
+    public String getDate() { return date.replace("GMT+01:00", "").substring(4,25); }
 
     public void setDate(String date) { this.date = date; }
 
