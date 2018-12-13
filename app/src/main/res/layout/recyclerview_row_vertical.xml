@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/black"
     android:orientation="vertical">
 
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/playerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -26,9 +27,14 @@
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="10dp"
                             android:layout_marginBottom="0dp"
+                            android:shadowColor="#7F000000"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="4"
                             android:text="name"
                             android:textColor="@android:color/white"
-                            android:textSize="12pt" />
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/postDate"
@@ -36,12 +42,16 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom|left"
                             android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="0dp"
                             android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="60dp"
+                            android:layout_marginBottom="80dp"
+                            android:shadowColor="#7F000000"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="4"
                             android:text="date"
                             android:textColor="@android:color/white"
-                            android:textSize="12pt" />
+                            android:textSize="24sp" />
                 </LinearLayout>
 
         </com.google.android.exoplayer2.ui.PlayerView>
